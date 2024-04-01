@@ -1,6 +1,8 @@
 package com.baixiu.middleware.elasticsearch.test;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.baixiu.middleware.elasticsearch.page.Page;
+import com.baixiu.middleware.elasticsearch.page.PageRequest;
 import com.baixiu.middleware.elasticsearch.test.brand.BrandIndexBean;
 import com.baixiu.middleware.elasticsearch.test.brand.BrandIndexServiceImpl;
 import com.baixiu.middleware.elasticsearch.transport.ElasticSearchTemplateClient;
@@ -39,7 +41,7 @@ public class TestElasticsearch extends Application{
     @Test
     public void testAddBrandIndex(){
         BrandIndexBean brandIndexBean=new BrandIndexBean ();
-        brandIndexBean.setBrandId ("test1024");
+        brandIndexBean.setBrandId ("4");
         brandIndexBean.setName ("testBrandName");
         brandIndexBean.setCreated (new Date ());
         brandIndexBean.setModified (new Date());
@@ -54,12 +56,50 @@ public class TestElasticsearch extends Application{
         brandIndexService.setType("rd_brand_pre");
         brandIndexService.setElasticSearchTemplate (elasticSearchTemplate);
         brandIndexService.addBean (1024L,brandIndexBean);
+       
     }
+    
+  
     
     @Test
     public void testSelectBrandById(){
+        brandIndexService.setIndex("rd_brand_pre");
+        brandIndexService.setType("rd_brand_pre");
+        brandIndexService.setElasticSearchTemplate (elasticSearchTemplate);
         BrandIndexBean brandIndexBean=brandIndexService.getById (1024L,"1024_test1024");
         System.out.println (JSONObject.toJSONString (brandIndexBean));
     }
     
+    
+    @Test
+    public void testQueryAllBrand(){
+        brandIndexService.setIndex("rd_brand_pre");
+        brandIndexService.setType("rd_brand_pre");
+        brandIndexService.setElasticSearchTemplate (elasticSearchTemplate);
+        PageRequest pageRequest=new PageRequest ();
+        pageRequest.setPage(1);
+        pageRequest.setPageSize (10);
+        Page<BrandIndexBean> page=brandIndexService.search(1024L,null,pageRequest,null);
+        System.out.println (JSONObject.toJSONString (page));
+    }
+    
+    @Test
+    public void testUpdateOrSave(){
+        BrandIndexBean brandIndexBean=new BrandIndexBean ();
+        brandIndexBean.setBrandId ("test1024");
+        brandIndexBean.setName ("testBrandName");
+        brandIndexBean.setCreated (new Date ());
+        brandIndexBean.setModified (new Date());
+        brandIndexBean.setCreator ("cflTest");
+        brandIndexBean.setModifier ("cflTest");
+        brandIndexBean.setLogo ("testLogo");
+        brandIndexBean.setInitial ("T");
+        brandIndexBean.setOuterId ("testOuterId");
+        brandIndexBean.setStatus (1);
+        brandIndexBean.setProductNum (10);
+        brandIndexService.setIndex("rd_brand_pre");
+        brandIndexService.setType("rd_brand_pre");
+        brandIndexService.setElasticSearchTemplate (elasticSearchTemplate);
+        brandIndexService.updateById (1024L,"test1024",brandIndexBean);
+    }
 }

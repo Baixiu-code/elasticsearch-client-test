@@ -1,30 +1,31 @@
-package com.baixiu.middleware.elasticsearch.test;
+package com.baixiu.middleware.elasticsearch.test.brand;
 
+import com.baixiu.middleware.elasticsearch.api.AbstractTransportSearchIndexService;
 import com.google.common.base.Strings;
-import com.jd.rd.product.domain.biz.service.search.domain.BrandIndexBean;
-import com.jd.rd.product.domain.biz.service.search.domain.BrandSearchBean;
-import com.jd.rd.product.domain.biz.service.search.service.EsAbstractIndexService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author wuyanghong3
  * date  2020/11/18
  */
+@Component
 @Slf4j
 public class BrandIndexServiceImpl extends AbstractTransportSearchIndexService<BrandSearchBean, BrandIndexBean> {
 
     public static String defaultRouting = "0";
+
+    
 
     @Override
     public QueryBuilder getQueryBuilder(BrandSearchBean searchBean) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
-        // 1.租户ID TODO 必传参数校验
         if (searchBean.getTenantId() != null) {
             boolQueryBuilder.filter(QueryBuilders.termQuery("tenantId", searchBean.getTenantId()));
         }
@@ -75,5 +76,10 @@ public class BrandIndexServiceImpl extends AbstractTransportSearchIndexService<B
     public void deleteByRoute(Long tenantId, String id, String route) {
         log.info("brand--deleteByRoute tenantId:{},id:{}", tenantId, id);
         super.deleteByRoute(tenantId, id, defaultRouting);
+    }
+
+    @Override
+    public void updateById(Long aLong, String s, BrandIndexBean brandIndexBean) {
+        
     }
 }

@@ -1,15 +1,15 @@
-package com.jd.rd.product.domain.biz.service.search.domain;
+package com.baixiu.middleware.elasticsearch.test.brand;
 
 import lombok.Data;
-
 import java.util.Date;
 
 /**
- * @author wuyanghong3
- * date  2020/11/18
+ * @author baixiu
+ * @date  2024年04月01日
  */
 @Data
 public class BrandIndexBean {
+    
     /**
      * 租户 ID
      */
@@ -19,10 +19,12 @@ public class BrandIndexBean {
      * 品牌ID
      */
     private String brandId;
+    
     /**
      * 品牌名称
      */
     private String name;
+    
     /**
      * logo链接
      */
